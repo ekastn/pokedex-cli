@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"github.com/eka-septian/pokedex-cli/internal/repl"
+)
 
 func main() {
-	fmt.Println("Hello, World!")
+	repl.SartRepl()
 }
