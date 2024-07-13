@@ -1,14 +1,13 @@
-package repl
+package main
 
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"strings"
 )
 
-func SartRepl() {
+func startRepl(cfg *config) {
 	commands := getCommands()
 
 	for {
@@ -17,11 +16,11 @@ func SartRepl() {
 		scanner.Scan()
 
 		text := scanner.Text()
-        cleaned := cleanInput(text)
+		cleaned := cleanInput(text)
 
-        if len(cleaned) == 0 {
-            continue
-        }
+		if len(cleaned) == 0 {
+			continue
+		}
 
 		command, ok := commands[cleaned[0]]
 
@@ -30,13 +29,14 @@ func SartRepl() {
 			continue
 		}
 
-		err := command.callback()
+		err := command.callback(cfg)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 		}
 	}
 }
 
 func cleanInput(text string) []string {
-	return strings.Fields(strings.ToLower(text))
+	lower := strings.ToLower(text)
+	return strings.Fields(lower)
 }

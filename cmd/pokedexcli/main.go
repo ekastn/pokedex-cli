@@ -5,8 +5,14 @@ import (
 	"log"
 	"os"
 
-	"github.com/eka-septian/pokedex-cli/internal/repl"
+	"github.com/eka-septian/pokedex-cli/internal/pokeapi"
 )
+
+type config struct {
+	PokeapiClinet pokeapi.Client
+	PrevLocationAreasUrl *string
+	NextLocationAreasUrl *string
+}
 
 func main() {
 	dat, err := os.ReadFile("assets/pokedex.txt")
@@ -16,5 +22,7 @@ func main() {
 
 	fmt.Println(string(dat))
 
-	repl.SartRepl()
+	startRepl(&config{
+		PokeapiClinet: pokeapi.NewClient(),
+	})
 }

@@ -1,5 +1,5 @@
 build:
-	@go build -o target/pokedexcli cmd/pokedexcli/main.go
+	@go build -o target/pokedexcli cmd/pokedexcli/*
 
 run: build
 	@./target/pokedexcli
