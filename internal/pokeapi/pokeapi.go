@@ -3,12 +3,15 @@ package pokeapi
 import (
 	"net/http"
 	"time"
+
+	"github.com/eka-septian/pokedex-cli/internal/pokecache"
 )
 
 const BaseUrl = "https://pokeapi.co/api/v2"
 
 type Client struct {
 	HttpClient http.Client
+	Cache      pokecache.Cache
 }
 
 func NewClient() Client {
@@ -16,5 +19,6 @@ func NewClient() Client {
 		HttpClient: http.Client{
 			Timeout: time.Minute,
 		},
+		Cache: pokecache.NewCache(time.Minute * 5),
 	}
 }
