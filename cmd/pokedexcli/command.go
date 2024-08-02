@@ -9,7 +9,7 @@ import (
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(* config) error
+	callback    func(cfg *config, args ...string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -34,10 +34,15 @@ func getCommands() map[string]cliCommand {
 			description: "lists some location areas",
 			callback:    callbackMapb,
 		},
+		"explore": {
+			name:        "explore (location areas)",
+			description: "Find a pokemon in a location area",
+			callback:    callbackExplore,
+		},
 	}
 }
 
-func callbackHelp(cfg *config) error {
+func callbackHelp(cfg *config, args ...string) error {
 	fmt.Println()
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println()
@@ -54,12 +59,12 @@ func callbackHelp(cfg *config) error {
 	return nil
 }
 
-func callbackExit(cfg *config) error {
+func callbackExit(cfg *config, args ...string) error {
 	os.Exit(0)
 	return nil
 }
 
-func callbackMap(cfg *config) error {
+func callbackMap(cfg *config, args ...string) error {
 	res, err := cfg.PokeapiClinet.ListLocationAreas(cfg.NextLocationAreasUrl)
 	if err != nil {
 		return err
@@ -76,7 +81,7 @@ func callbackMap(cfg *config) error {
 	return nil
 }
 
-func callbackMapb(cfg *config) error {
+func callbackMapb(cfg *config, args ...string) error {
 	if cfg.PrevLocationAreasUrl == nil {
 		return errors.New("You are on the first page")
 	}
@@ -93,6 +98,24 @@ func callbackMapb(cfg *config) error {
 
 	cfg.NextLocationAreasUrl = res.Next
 	cfg.PrevLocationAreasUrl = res.Previous
+
+	return nil
+}
+
+func callbackExplore(cfg *config, args ...string) error {
+	if len(args) != 1 {
+		return errors.New("You must provide a location area name")
+	}
+
+	locationArea, err := cfg.PokeapiClinet.GetLocationArea(args[0])
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Found Pokemon:")
+	for _, area := range locationArea.PokemonEncounters {
+		fmt.Println(area.Pokemon.Name)
+	}
 
 	return nil
 }
