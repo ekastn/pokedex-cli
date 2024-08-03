@@ -12,6 +12,7 @@ type config struct {
 	PokeapiClinet pokeapi.Client
 	PrevLocationAreasUrl *string
 	NextLocationAreasUrl *string
+	caughtPokemon map[string]pokeapi.Pokemon
 }
 
 func main() {
@@ -24,5 +25,6 @@ func main() {
 
 	startRepl(&config{
 		PokeapiClinet: pokeapi.NewClient(),
+		caughtPokemon: make(map[string]pokeapi.Pokemon),
 	})
 }

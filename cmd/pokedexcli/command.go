@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"math/rand"
 	"os"
 )
 
@@ -38,6 +39,11 @@ func getCommands() map[string]cliCommand {
 			name:        "explore (location areas)",
 			description: "Find a pokemon in a location area",
 			callback:    callbackExplore,
+		},
+		"catch": {
+			name:        "catch (location areas)",
+			description: "Attempt to catch a pokemon",
+			callback:    callbackCatch,
 		},
 	}
 }
@@ -115,6 +121,29 @@ func callbackExplore(cfg *config, args ...string) error {
 	fmt.Println("Found Pokemon:")
 	for _, area := range locationArea.PokemonEncounters {
 		fmt.Println(area.Pokemon.Name)
+	}
+
+	return nil
+}
+
+func callbackCatch(cfg *config, args ...string) error {
+	if len(args) != 1 {
+		return errors.New("You must provide a pokemon name to catch")
+	}
+
+	pokemon, err := cfg.PokeapiClinet.GetPokemon(args[0])
+	if err != nil {
+		return err
+	}
+
+	threshhold := 50
+	randNum := rand.Intn(pokemon.BaseExperience)
+	fmt.Printf("Throwing a Pokeball at %v...\n", pokemon.Name)
+	if randNum > threshhold {
+		fmt.Printf("%v excaped!\n", pokemon.Name)
+	} else {
+		fmt.Printf("%v was caught\n", pokemon.Name)
+		cfg.caughtPokemon[pokemon.Name] = pokemon
 	}
 
 	return nil
