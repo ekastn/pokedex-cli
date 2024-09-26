@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/eka-septian/pokedex-cli/internal/pokecache"
+	"github.com/ekastn/pokedex-cli/internal/pokecache"
 )
 
 const BaseUrl = "https://pokeapi.co/api/v2"

@@ -5,14 +5,14 @@ import (
 	"log"
 	"os"
 
-	"github.com/eka-septian/pokedex-cli/internal/pokeapi"
+	"github.com/ekastn/pokedex-cli/internal/pokeapi"
 )
 
 type config struct {
-	PokeapiClinet pokeapi.Client
+	PokeapiClinet        pokeapi.Client
 	PrevLocationAreasUrl *string
 	NextLocationAreasUrl *string
-	caughtPokemon map[string]pokeapi.Pokemon
+	caughtPokemon        map[string]pokeapi.Pokemon
 }
 
 func main() {

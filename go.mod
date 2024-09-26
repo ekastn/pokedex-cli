@@ -1,3 +1,3 @@
-module github.com/eka-septian/pokedex-cli
+module github.com/ekastn/pokedex-cli
 
 go 1.22.4
